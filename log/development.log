@@ -1,0 +1,386 @@
+  [1m[36m (1.8ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  select sqlite_version(*)
+  [1m[36m (1.9ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to CreateSmugglers (20160114005027)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "smugglers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password" varchar, "location" integer, "home" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160114005027"]]
+  [1m[35m (1.5ms)[0m  commit transaction
+Migrating to CreateVehicles (20160114005617)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "vehicles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "tycoons_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160114005617"]]
+  [1m[35m (1.5ms)[0m  commit transaction
+Migrating to CreateMissions (20160114005748)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "missions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "smuggler_id" integer, "vehicle_id" integer, "cost" decimal, "cargo" text, "origin" integer, "destination" integer, "name" varchar, "containers" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160114005748"]]
+  [1m[35m (1.9ms)[0m  commit transaction
+Migrating to CreateTycoons (20160114010450)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "tycoons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password" varchar, "home" integer, "cigar" varchar, "networth" decimal, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160114010450"]]
+  [1m[35m (1.4ms)[0m  commit transaction
+Migrating to RemoveLocationColumnFromSmugglersTable (20160114192045)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160114192045"]]
+  [1m[36m (0.8ms)[0m  [1mcommit transaction[0m
+Migrating to DropColumnLocationFromSmugglers (20160114192722)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TEMPORARY TABLE "asmugglers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password" varchar, "location" integer, "home" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.0ms)[0m  SELECT * FROM "smugglers"
+  [1m[36m (0.2ms)[0m  [1mDROP TABLE "smugglers"[0m
+  [1m[35m (0.1ms)[0m  CREATE TABLE "smugglers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password" varchar, "home" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.0ms)[0m  [1mSELECT * FROM "asmugglers"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "asmugglers"
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160114192722"]]
+  [1m[35m (1.8ms)[0m  commit transaction
+Migrating to RemoveColumnHomeAndLocationFromTycoonsTable (20160114193149)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TEMPORARY TABLE "atycoons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password" varchar, "home" integer, "cigar" varchar, "networth" decimal, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "tycoons"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "tycoons"
+  [1m[36m (0.2ms)[0m  [1mCREATE TABLE "tycoons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password" varchar, "cigar" varchar, "networth" decimal, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "atycoons"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "atycoons"[0m
+  [1m[35m (0.1ms)[0m  CREATE TEMPORARY TABLE "atycoons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password" varchar, "cigar" varchar, "networth" decimal, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.0ms)[0m  [1mSELECT * FROM "tycoons"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "tycoons"
+  [1m[36m (0.2ms)[0m  [1mCREATE TABLE "tycoons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password" varchar, "cigar" varchar, "networth" decimal, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.0ms)[0m  SELECT * FROM "atycoons"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "atycoons"[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160114193149"]]
+  [1m[36m (1.6ms)[0m  [1mcommit transaction[0m
+Migrating to RemoveHomeColumnFromSmugglers (20160114193304)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TEMPORARY TABLE "asmugglers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password" varchar, "home" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "smugglers"
+  [1m[36m (0.7ms)[0m  [1mDROP TABLE "smugglers"[0m
+  [1m[35m (0.6ms)[0m  CREATE TABLE "smugglers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "asmugglers"[0m
+  [1m[35m (0.1ms)[0m  DROP TABLE "asmugglers"
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160114193304"]]
+  [1m[35m (1.3ms)[0m  commit transaction
+Migrating to AddTypeColumnToVehicleTable (20160114194743)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "vehicles" ADD "type" varchar
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160114194743"]]
+  [1m[35m (1.3ms)[0m  commit transaction
+Migrating to ChangePasswordColumnNameInSmugglersTable (20160114214601)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  CREATE TEMPORARY TABLE "asmugglers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password_digest" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.0ms)[0m  [1mSELECT * FROM "smugglers"[0m
+  [1m[35m (0.2ms)[0m  DROP TABLE "smugglers"
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "smugglers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password_digest" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.0ms)[0m  SELECT * FROM "asmugglers"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "asmugglers"[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160114214601"]]
+  [1m[36m (1.4ms)[0m  [1mcommit transaction[0m
+Migrating to ChangePasswordColumnNameInTycoonsTable (20160114214845)
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36m (0.2ms)[0m  [1mCREATE TEMPORARY TABLE "atycoons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password_digest" varchar, "cigar" varchar, "networth" decimal, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "tycoons"
+  [1m[36m (0.3ms)[0m  [1mDROP TABLE "tycoons"[0m
+  [1m[35m (0.2ms)[0m  CREATE TABLE "tycoons" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "username" varchar, "email" varchar, "password_digest" varchar, "cigar" varchar, "networth" decimal, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "atycoons"[0m
+  [1m[35m (0.1ms)[0m  DROP TABLE "atycoons"
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160114214845"]]
+  [1m[35m (3.9ms)[0m  commit transaction
+Migrating to RemoveTypeColumnFromVehiclesTable (20160115180123)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  CREATE TEMPORARY TABLE "avehicles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "tycoons_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "type" varchar) 
+  [1m[36m (0.0ms)[0m  [1mSELECT * FROM "vehicles"[0m
+  [1m[35m (0.2ms)[0m  DROP TABLE "vehicles"
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "vehicles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "tycoons_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.0ms)[0m  SELECT * FROM "avehicles"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "avehicles"[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160115180123"]]
+  [1m[36m (1.6ms)[0m  [1mcommit transaction[0m
+Migrating to ChangeTycoonsIdColumnInVehcilesTable (20160115183735)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.2ms)[0m  [1mCREATE TEMPORARY TABLE "avehicles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "tycoon_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.0ms)[0m  SELECT * FROM "vehicles"
+  [1m[36m (0.2ms)[0m  [1mDROP TABLE "vehicles"[0m
+  [1m[35m (0.1ms)[0m  CREATE TABLE "vehicles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "tycoon_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.0ms)[0m  [1mSELECT * FROM "avehicles"[0m
+  [1m[35m (0.1ms)[0m  DROP TABLE "avehicles"
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160115183735"]]
+  [1m[35m (1.4ms)[0m  commit transaction
+Migrating to ChangeDatatypeForOriginColumnInMissionTable (20160115193711)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  CREATE TEMPORARY TABLE "amissions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "smuggler_id" integer, "vehicle_id" integer, "cost" decimal, "cargo" text, "origin" integer, "destination" integer, "name" varchar, "containers" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.0ms)[0m  [1mSELECT * FROM "missions"[0m
+  [1m[35m (0.2ms)[0m  DROP TABLE "missions"
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "missions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "smuggler_id" integer, "vehicle_id" integer, "cost" decimal, "cargo" text, "origin" varchar, "destination" integer, "name" varchar, "containers" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "amissions"
+  [1m[36m (0.3ms)[0m  [1mDROP TABLE "amissions"[0m
+  [1m[35m (0.4ms)[0m  CREATE TEMPORARY TABLE "amissions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "smuggler_id" integer, "vehicle_id" integer, "cost" decimal, "cargo" text, "origin" varchar, "destination" integer, "name" varchar, "containers" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.2ms)[0m  [1mSELECT * FROM "missions"[0m
+  [1m[35m (1.5ms)[0m  DROP TABLE "missions"
+  [1m[36m (0.2ms)[0m  [1mCREATE TABLE "missions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "smuggler_id" integer, "vehicle_id" integer, "cost" decimal, "cargo" text, "origin" varchar, "destination" varchar, "name" varchar, "containers" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "amissions"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "amissions"[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160115193711"]]
+  [1m[36m (1.9ms)[0m  [1mcommit transaction[0m
+Migrating to CreateRelationships (20160115212506)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "relationships" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "follower_id" integer, "followed_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_relationships_on_follower_id" ON "relationships" ("follower_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_relationships_on_follower_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_relationships_on_follower_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_relationships_on_followed_id" ON "relationships" ("followed_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_relationships_on_followed_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_relationships_on_followed_id' AND type='index'
+[0m
+  [1m[35m (2.3ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_relationships_on_follower_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_relationships_on_follower_id' AND type='index'
+
+  [1m[36m (0.4ms)[0m  [1mCREATE UNIQUE INDEX "index_relationships_on_follower_id_and_followed_id" ON "relationships" ("follower_id", "followed_id")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160115212506"]]
+  [1m[36m (1.6ms)[0m  [1mcommit transaction[0m
+Migrating to AddAttachmentImageToVehicles (20160115213507)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "vehicles" ADD "image_file_name" varchar[0m
+  [1m[35m (0.1ms)[0m  ALTER TABLE "vehicles" ADD "image_content_type" varchar
+  [1m[36m (0.1ms)[0m  [1mALTER TABLE "vehicles" ADD "image_file_size" integer[0m
+  [1m[35m (0.1ms)[0m  ALTER TABLE "vehicles" ADD "image_updated_at" datetime
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160115213507"]]
+  [1m[35m (1.5ms)[0m  commit transaction
+Migrating to AddAttachmentAvatarToSmugglers (20160116171735)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "smugglers" ADD "avatar_file_name" varchar
+  [1m[36m (0.1ms)[0m  [1mALTER TABLE "smugglers" ADD "avatar_content_type" varchar[0m
+  [1m[35m (0.1ms)[0m  ALTER TABLE "smugglers" ADD "avatar_file_size" integer
+  [1m[36m (0.1ms)[0m  [1mALTER TABLE "smugglers" ADD "avatar_updated_at" datetime[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160116171735"]]
+  [1m[36m (1.4ms)[0m  [1mcommit transaction[0m
+Migrating to AddAttachmentAvatarToTycoons (20160116172741)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (1.0ms)[0m  [1mALTER TABLE "tycoons" ADD "avatar_file_name" varchar[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "tycoons" ADD "avatar_content_type" varchar
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "tycoons" ADD "avatar_file_size" integer[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "tycoons" ADD "avatar_updated_at" datetime
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20160116172741"]]
+  [1m[35m (1.6ms)[0m  commit transaction
+Migrating to AddTycoonRefrencesToMissionsTable (20160117212637)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "missions" ADD "tycoon_id" integer
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_missions_on_tycoon_id" ON "missions" ("tycoon_id")[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20160117212637"]]
+  [1m[36m (1.5ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_missions_on_tycoon_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_missions_on_tycoon_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_relationships_on_follower_id_and_followed_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_relationships_on_follower_id_and_followed_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_relationships_on_followed_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_relationships_on_followed_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_relationships_on_follower_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_relationships_on_follower_id' AND type='index'
+
+
+
+Started GET "/" for ::1 at 2016-02-08 22:32:23 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (1.1ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (2.0ms)
+  [1m[35mSmuggler Load (1.3ms)[0m  SELECT  "smugglers".* FROM "smugglers" WHERE "smugglers"."id" IS NULL LIMIT 1
+  [1m[36mTycoon Load (1.2ms)[0m  [1mSELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1[0m
+  [1m[35mCACHE (0.2ms)[0m  SELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1
+Completed 200 OK in 2144ms (Views: 2128.4ms | ActiveRecord: 3.0ms)
+
+
+Started GET "/" for ::1 at 2016-02-08 22:32:25 -0500
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (0.0ms)
+  [1m[36mSmuggler Load (0.2ms)[0m  [1mSELECT  "smugglers".* FROM "smugglers" WHERE "smugglers"."id" IS NULL LIMIT 1[0m
+  [1m[35mTycoon Load (0.1ms)[0m  SELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1[0m
+Completed 200 OK in 41ms (Views: 40.7ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/assets/missions.self-5c450d4afbd59d017431a64d10d102fcc99be997b775e829caec6976b92f0062.css?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/vehicles.self-cd8cb1b157a1a2a558f0827a2c7de8c9c12a452425bc1b2e618bebe8e2bd362b.css?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/sessions.self-bb9a14e8fac3c57eb18d663683191682440db456ad512820fbb0842028399dcf.css?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/smugglers.self-eeb7a6ef4167247c61f9a095df62e6fb2626f15ba7d5d0d8a6f4326af9e61e01.css?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/tycoon.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/application.self-7188f836d4a5ed5b47ba9508bc159dbf6fefc9a37527978a3e7c850bf08d42f4.css?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/missions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/smugglers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/tycoon.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/vehicles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/application.self-83c6644b3078282af89ff9932ccc03112e29099c73eabcc4594d9b2926d52e13.js?body=1" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/assets/noirback1.jpg" for ::1 at 2016-02-08 22:32:26 -0500
+
+
+Started GET "/smugglers/new" for ::1 at 2016-02-08 22:32:38 -0500
+Processing by SmugglersController#new as HTML
+  Parameters: {"authenticity_token"=>"gWeMwrs/k1fRb1cPicf+suhaPDCNcKDbOXESNdMH/zwqj+FNfYM3BXDW4Ko8hHlyHLze/STRC6mQwzjnougeWw=="}
+  Rendered smugglers/new.html.erb within layouts/smug (63.7ms)
+  [1m[35mSmuggler Load (0.6ms)[0m  SELECT  "smugglers".* FROM "smugglers" WHERE "smugglers"."id" IS NULL LIMIT 1
+  [1m[36mTycoon Load (0.3ms)[0m  [1mSELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1
+Completed 200 OK in 116ms (Views: 110.4ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/assets/noirback3.jpg" for ::1 at 2016-02-08 22:32:38 -0500
+
+
+Started POST "/smugglers" for ::1 at 2016-02-08 22:33:16 -0500
+Processing by SmugglersController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"OZLB1xeyHbl7Iu1t9hZ1OM0xz3nZfrRI6YBfHxsFZH+SeqxY0Q6569qbWshDVfL4OdcttHDfHzpAMnXNauqFGA==", "smuggler"=>{"email"=>"AlanMichaelRhode@gmail.com", "username"=>"AlanMRhode", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "avatar"=>#<ActionDispatch::Http::UploadedFile:0x007f80dab5ee80 @tempfile=#<Tempfile:/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/RackMultipart20160208-38293-gp69l6.JPG>, @original_filename="funshot copy.JPG", @content_type="image/jpeg", @headers="Content-Disposition: form-data; name=\"smuggler[avatar]\"; filename=\"funshot copy.JPG\"\r\nContent-Type: image/jpeg\r\n">}, "commit"=>"create"}
+Unpermitted parameter: password_confirmation
+Command :: file -b --mime '/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/5a1288044934dcf84bf60f4854e05be520160208-38293-9kfnes.JPG'
+Command :: identify -format '%wx%h,%[exif:orientation]' '/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/000e541abc7de0cf97afbc551f35a87020160208-38293-9pveot.JPG[0]' 2>/dev/null
+Command :: identify -format %m '/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/000e541abc7de0cf97afbc551f35a87020160208-38293-9pveot.JPG[0]'
+Command :: convert '/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/000e541abc7de0cf97afbc551f35a87020160208-38293-9pveot.JPG[0]' -auto-orient -resize "300x300>" '/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/bb948875f4b56f9d01c2f7bf909c979920160208-38293-7npft4'
+Command :: identify -format '%wx%h,%[exif:orientation]' '/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/000e541abc7de0cf97afbc551f35a87020160208-38293-9pveot.JPG[0]' 2>/dev/null
+Command :: identify -format %m '/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/000e541abc7de0cf97afbc551f35a87020160208-38293-9pveot.JPG[0]'
+Command :: convert '/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/000e541abc7de0cf97afbc551f35a87020160208-38293-9pveot.JPG[0]' -auto-orient -resize "50x50>" '/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/bb948875f4b56f9d01c2f7bf909c979920160208-38293-14dsupr'
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35mSmuggler Exists (0.2ms)[0m  SELECT  1 AS one FROM "smugglers" WHERE "smugglers"."email" = 'AlanMichaelRhode@gmail.com' LIMIT 1
+  [1m[36mSmuggler Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "smugglers" WHERE "smugglers"."username" = 'AlanMRhode' LIMIT 1[0m
+Command :: file -b --mime '/var/folders/2p/hzjqgb5n20d20_028kpfskbc0000gn/T/5a1288044934dcf84bf60f4854e05be520160208-38293-yckj05.JPG'
+  [1m[35mSQL (1.5ms)[0m  INSERT INTO "smugglers" ("username", "email", "password_digest", "avatar_file_name", "avatar_content_type", "avatar_file_size", "avatar_updated_at", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)  [["username", "AlanMRhode"], ["email", "AlanMichaelRhode@gmail.com"], ["password_digest", "$2a$10$t3WW.8rWRbdzzjrOx0t0Zeh6xyK.3DIvpAznD2eUS5c8J5eql4RHq"], ["avatar_file_name", "funshot_copy.JPG"], ["avatar_content_type", "image/jpeg"], ["avatar_file_size", 191218], ["avatar_updated_at", "2016-02-09 03:33:16.734271"], ["created_at", "2016-02-09 03:33:17.057032"], ["updated_at", "2016-02-09 03:33:17.057032"]]
+  [1m[36m (1.3ms)[0m  [1mcommit transaction[0m
+Redirected to http://localhost:3000/login
+Completed 302 Found in 409ms (ActiveRecord: 3.2ms)
+
+
+Started GET "/login" for ::1 at 2016-02-08 22:33:17 -0500
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (0.1ms)
+  [1m[35mSmuggler Load (0.2ms)[0m  SELECT  "smugglers".* FROM "smugglers" WHERE "smugglers"."id" IS NULL LIMIT 1
+  [1m[36mTycoon Load (0.4ms)[0m  [1mSELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1
+Completed 200 OK in 65ms (Views: 63.0ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/smugglers" for ::1 at 2016-02-08 22:33:21 -0500
+Processing by SmugglersController#index as HTML
+  Parameters: {"authenticity_token"=>"xSJJn8Mxmmj+Z6VWYEiEIc0UdpW9zZPFyC2OTIn8WV1uyiQQBY0+Ol/eEvPVCwPhOfKUWBRsOLdhn6Se+BO4Og=="}
+  [1m[36mSmuggler Load (0.1ms)[0m  [1mSELECT "smugglers".* FROM "smugglers"[0m
+  [1m[35mSmuggler Load (0.1ms)[0m  SELECT  "smugglers".* FROM "smugglers" WHERE "smugglers"."id" IS NULL LIMIT 1
+  [1m[36mTycoon Load (0.2ms)[0m  [1mSELECT "tycoons".* FROM "tycoons"[0m
+  Rendered smugglers/index.html.erb within layouts/smug (4.7ms)
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "smugglers".* FROM "smugglers" WHERE "smugglers"."id" IS NULL LIMIT 1
+  [1m[36mTycoon Load (0.2ms)[0m  [1mSELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1
+Completed 200 OK in 42ms (Views: 41.0ms | ActiveRecord: 0.6ms)
+
+
+Started GET "/" for ::1 at 2016-02-09 16:48:45 -0500
+  [1m[36mActiveRecord::SchemaMigration Load (1.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (2.3ms)
+  [1m[35mSmuggler Load (1.4ms)[0m  SELECT  "smugglers".* FROM "smugglers" WHERE "smugglers"."id" IS NULL LIMIT 1
+  [1m[36mTycoon Load (1.2ms)[0m  [1mSELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1
+Completed 200 OK in 495ms (Views: 477.4ms | ActiveRecord: 2.9ms)
+
+
+Started GET "/" for ::1 at 2016-02-09 16:48:46 -0500
+Processing by SessionsController#new as HTML
+  Rendered sessions/new.html.erb within layouts/application (0.1ms)
+  [1m[36mSmuggler Load (0.2ms)[0m  [1mSELECT  "smugglers".* FROM "smugglers" WHERE "smugglers"."id" IS NULL LIMIT 1[0m
+  [1m[35mTycoon Load (0.2ms)[0m  SELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "tycoons".* FROM "tycoons" WHERE "tycoons"."id" IS NULL LIMIT 1[0m
+Completed 200 OK in 37ms (Views: 34.7ms | ActiveRecord: 0.5ms)
+
+
+Started GET "/assets/missions.self-5c450d4afbd59d017431a64d10d102fcc99be997b775e829caec6976b92f0062.css?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/smugglers.self-eeb7a6ef4167247c61f9a095df62e6fb2626f15ba7d5d0d8a6f4326af9e61e01.css?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/tycoon.self-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/vehicles.self-cd8cb1b157a1a2a558f0827a2c7de8c9c12a452425bc1b2e618bebe8e2bd362b.css?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/sessions.self-bb9a14e8fac3c57eb18d663683191682440db456ad512820fbb0842028399dcf.css?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/application.self-7188f836d4a5ed5b47ba9508bc159dbf6fefc9a37527978a3e7c850bf08d42f4.css?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/smugglers.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/tycoon.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/missions.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/vehicles.self-877aef30ae1b040ab8a3aba4e3e309a11d7f2612f44dde450b5c157aa5f95c05.js?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/application.self-83c6644b3078282af89ff9932ccc03112e29099c73eabcc4594d9b2926d52e13.js?body=1" for ::1 at 2016-02-09 16:48:46 -0500
+
+
+Started GET "/assets/noirback1.jpg" for ::1 at 2016-02-09 16:48:46 -0500

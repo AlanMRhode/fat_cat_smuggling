@@ -1,0 +1,21 @@
+<%= content_tag :h1, "Classified", class: "classified" %>
+
+<%= content_tag :p, "name: #{@mission.name}" %>
+
+<%= content_tag :p, "cost: $#{@mission.cost}" %>
+<%= content_tag :p, "origin:#{@mission.origin}" %>
+<%= content_tag :p, "destination: #{@mission.destination}"%>
+<%= content_tag :p, "cargo: #{@mission.cargo}" %>
+<%= content_tag :p, "containers #{@mission.containers}" %>
+<%= link_to "Vehicle Used: #{@mission.vehicle.name}", vehicle_path(@mission.vehicle.id), method: :get, class: "smuggler_name" %>
+<%= image_tag @mission.vehicle.image.url(:medium) %>
+<br>
+<%= link_to "Smuggler: #{@mission.smuggler.username}", smuggler_path(@mission.smuggler.id), method: :get, class: "smuggler_name" %>
+<br>
+<%= image_tag @mission.smuggler.avatar.url(:medium) %>
+<%= content_tag :p, "Date: #{@mission.created_at}" %>
+<% if logged_in_ty? %>
+<%= link_to "Cancel Mission", mission_path(@mission), method: :delete, class: "smuggler_name" %>
+<% end %>
+
+

@@ -1,0 +1,178 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+.view_container {
+	background-image: url(noirback1.jpg);
+	background-attachment: fixed;
+	background-repeat: repeat;
+	background-position: center;
+	width: 100%;
+	height: 100%;
+	background-size: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.alert-success {
+	width: 280px;
+   	height: 50px;
+   	background-color: rgb(255, 255, 255);
+   	color: #000000;
+   	font-family: 'Special Elite', cursive;
+   	font-size: 22px;
+   	border-radius: 12px;
+   	padding: 5px;
+   	position: absolute;
+   	bottom: 15%;
+   	left: 75%;
+}
+
+.welcome {
+	color: rgb(255, 255, 255);
+	font-family: 'Special Elite', cursive;
+   	font-size: 22px;
+   	position: relative;
+   	top: 3%;
+   	left: 3%;
+   	padding: 5px;
+} 
+
+.headline {
+  
+  font-family: 'Great Vibes', Helvetica, sans-serif;
+  color: rgb(255, 255, 255);
+  font-size: 40px;
+  text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+  position: absolute;
+  top: 2%;
+  left: 36%;
+  text-align: center;
+  line-height: 1px;
+
+}
+
+.logout {
+	color: rgb(255, 255, 255);
+	font-family: 'Special Elite', cursive;
+   	font-size: 16px;
+   	text-decoration: none;
+   	transition: 1s;
+   	padding: 20px;
+}
+
+.logout:hover {
+	text-decoration: underline;
+	color: #801515;
+}
+
+.login {
+	position: absolute;
+	/*display: inline;*/
+	bottom: 10%;
+	color: rgb(255, 255, 255);
+	font-family: 'Special Elite', cursive;
+}
+
+.nav {
+	/*display: inline-block;*/
+	width: 100px;
+	height: 150px;
+	position: absolute;
+	top: 20%;
+	left: 1%;
+	text-align: center;
+	padding: 10px;
+
+}
+
+.menu-box {
+
+	position: relative;
+	left: 5%;
+	padding: 10px;
+	text-decoration: none;
+	color: rgb(255, 255, 255);
+
+}
+
+.linkc {
+	text-decoration: none;
+	font-family: 'Special Elite', cursive;
+	color: rgb(255, 255, 255);
+	transition: 1s;
+
+
+}
+
+.linkc:hover {
+
+	text-decoration: underline;
+	color: #801515;
+}
+
+
+
+#content_container {
+	position: absolute;
+	left: 60%;
+	top: 10%;
+	background-color: rgba(245, 245, 245, .5);
+	background-repeat: none;
+	background-position: center;
+	width: 500px;
+	height: 350px;
+	/*box-shadow: 7px 7px 3px #2F1F00;*/
+	overflow: auto;
+	/*transform: rotate(1deg);*/
+}
+
+.user_content {
+	position: relative;
+	padding: 20px;
+	left: 10%;
+	font-family: 'Special Elite', cursive;
+	color: #000000;
+	font-size: 30px;
+	border-radius: 8px;
+
+	
+}
+
+.avatar:hover {
+	/*box-shadow: 3px 3px 1px #2F1F00;*/
+	/*Maybe we can put this in later*/
+}
+
+
+
+
+
+.smuggler_name {
+	font-size: 25px;
+	font-family: 'Special Elite', cursive;
+	text-decoration: none;
+	color: #000000;
+	transition: 1s;
+}
+
+.smuggler_name:hover {
+	opacity: 1;
+	text-decoration: underline;
+	color: #801515;
+}
+
+
